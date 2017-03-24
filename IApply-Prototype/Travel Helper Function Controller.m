@@ -48,7 +48,10 @@
 
     - (NSMutableDictionary *) translateJSONToDictionary:(NSString *)stringJSON
     {
-        NSData *dataJSON = [stringJSON dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *decoded= [stringJSON stringByRemovingPercentEncoding];
+        NSString *withoutNewline = [decoded stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+        NSString *tobeConvertedToData = [withoutNewline stringByReplacingOccurrencesOfString: @" " withString:@""];
+        NSData *dataJSON = [tobeConvertedToData dataUsingEncoding:NSUTF8StringEncoding];
         NSError *error;
         NSMutableDictionary *dictionaryJSON = [NSJSONSerialization JSONObjectWithData:dataJSON options:kNilOptions error:&error];
         NSLog(@"Travel Helper Function | translateJSONToDictionary, output: %@", dictionaryJSON);
